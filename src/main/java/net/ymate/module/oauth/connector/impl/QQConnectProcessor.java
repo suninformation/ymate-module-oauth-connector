@@ -43,7 +43,7 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
     private static final String __USERINFO_URL = "https://graph.qq.com/user/get_user_info?";
 
     public String getAuthorizeUrl(String state) {
-        return __CONNECT_URL + __doBuildAuthzUrl("null", state, true);
+        return __CONNECT_URL + __doBuildAuthzUrl(null, state, true);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
         OAuthConnectUser _connectUser = super.__doGetAccessToken(code, tokenUrl);
         if (_connectUser != null) {
             IHttpResponse _response = HttpClientHelper.create().get(__OPEN_ID_URL.concat(_connectUser.getAccessToken()), __doGetRequestHeaders());
-            if (_response != null && _response.getStatusCode() == 200) {
-                JSONObject _result = JSON.parseObject(StringUtils.substringBetween(_response.getContent(), "(", ")"));
+            JSONObject _result = __doParseConnectResponseBody(_response);
+            if (_result != null) {
                 _connectUser.setOpenId(_result.getString("openid"));
             }
         }
@@ -93,5 +93,22 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
             }
         }
         return _connectUser;
+    }
+
+    @Override
+    protected JSONObject __doParseConnectResponseBody(IHttpResponse response) throws Exception {
+        if (response != null && response.getStatusCode() == 200) {
+            JSONObject _result = null;
+            if (StringUtils.startsWith(response.getContent(), "callback")) {
+                _result = JSON.parseObject(StringUtils.substringBetween(response.getContent(), "callback(", ");"));
+            } else {
+                _result = JSON.parseObject(response.getContent());
+            }
+            if (_result.containsKey("error")) {
+                throw new RuntimeException(_result.toJSONString());
+            }
+            return _result;
+        }
+        return null;
     }
 }

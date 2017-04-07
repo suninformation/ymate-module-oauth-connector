@@ -34,27 +34,27 @@ import java.util.Map;
  * @version 1.0
  */
 @Module
-public class CmsOAuthConnector implements IModule, ICmsOAuthConnector {
+public class OAuthConnector implements IModule, IOAuthConnector {
 
-    private static final Log _LOG = LogFactory.getLog(CmsOAuthConnector.class);
+    private static final Log _LOG = LogFactory.getLog(OAuthConnector.class);
 
-    public static final Version VERSION = new Version(1, 0, 0, CmsOAuthConnector.class.getPackage().getImplementationVersion(), Version.VersionType.Alphal);
+    public static final Version VERSION = new Version(1, 0, 0, OAuthConnector.class.getPackage().getImplementationVersion(), Version.VersionType.Alphal);
 
-    private static volatile ICmsOAuthConnector __instance;
+    private static volatile IOAuthConnector __instance;
 
     private YMP __owner;
 
-    private ICmsOAuthConnectorModuleCfg __moduleCfg;
+    private IOAuthConnectorModuleCfg __moduleCfg;
 
     private boolean __inited;
 
     private Map<String, IOAuthConnectProcessor> __connectProcessors;
 
-    public static ICmsOAuthConnector get() {
+    public static IOAuthConnector get() {
         if (__instance == null) {
             synchronized (VERSION) {
                 if (__instance == null) {
-                    __instance = YMP.get().getModule(CmsOAuthConnector.class);
+                    __instance = YMP.get().getModule(OAuthConnector.class);
                 }
             }
         }
@@ -62,13 +62,13 @@ public class CmsOAuthConnector implements IModule, ICmsOAuthConnector {
     }
 
     public String getName() {
-        return ICmsOAuthConnector.MODULE_NAME;
+        return IOAuthConnector.MODULE_NAME;
     }
 
     public void init(YMP owner) throws Exception {
         if (!__inited) {
             //
-            _LOG.info("Initializing ymcms-oauth-connector-" + VERSION);
+            _LOG.info("Initializing ymate-module-oauth-connector-" + VERSION);
             //
             __owner = owner;
             __moduleCfg = new DefaultModuleCfg(owner);
@@ -117,7 +117,7 @@ public class CmsOAuthConnector implements IModule, ICmsOAuthConnector {
         return __owner;
     }
 
-    public ICmsOAuthConnectorModuleCfg getModuleCfg() {
+    public IOAuthConnectorModuleCfg getModuleCfg() {
         return __moduleCfg;
     }
 }

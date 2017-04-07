@@ -16,7 +16,7 @@
 package net.ymate.module.oauth.connector.controller;
 
 import net.ymate.framework.commons.ParamUtils;
-import net.ymate.module.oauth.connector.CmsOAuthConnector;
+import net.ymate.module.oauth.connector.OAuthConnector;
 import net.ymate.module.oauth.connector.IOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.OAuthConnectUser;
 import net.ymate.platform.webmvc.annotation.Controller;
@@ -44,10 +44,10 @@ public class OAuthConnectController {
      */
     @RequestMapping("/{connectName}")
     public IView __toConnect(@PathVariable String connectName, @RequestParam String state) throws Exception {
-        IOAuthConnectProcessor _processor = CmsOAuthConnector.get().getConnectProcessor(connectName);
+        IOAuthConnectProcessor _processor = OAuthConnector.get().getConnectProcessor(connectName);
         if (_processor != null) {
             state = StringUtils.defaultIfBlank(state, ParamUtils.createNonceStr());
-            CmsOAuthConnector.get().getModuleCfg().getConnectCallbackHandler().connect(connectName, state);
+            OAuthConnector.get().getModuleCfg().getConnectCallbackHandler().connect(connectName, state);
             //
             return View.redirectView(_processor.getAuthorizeUrl(state));
         }
@@ -62,11 +62,11 @@ public class OAuthConnectController {
      */
     @RequestMapping("/{connectName}/redirect")
     public IView __onRedirect(@PathVariable String connectName, @RequestParam String code, @RequestParam String state) throws Exception {
-        IOAuthConnectProcessor _processor = CmsOAuthConnector.get().getConnectProcessor(connectName);
+        IOAuthConnectProcessor _processor = OAuthConnector.get().getConnectProcessor(connectName);
         if (_processor != null) {
             OAuthConnectUser _connectUser = _processor.getConnectUser(code);
             if (_connectUser != null) {
-                return CmsOAuthConnector.get().getModuleCfg().getConnectCallbackHandler().handle(connectName, _connectUser, state);
+                return OAuthConnector.get().getModuleCfg().getConnectCallbackHandler().handle(connectName, _connectUser, state);
             }
         }
         return HttpStatusView.NOT_FOUND;

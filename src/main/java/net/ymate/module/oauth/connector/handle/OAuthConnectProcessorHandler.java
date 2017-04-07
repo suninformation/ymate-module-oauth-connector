@@ -15,7 +15,7 @@
  */
 package net.ymate.module.oauth.connector.handle;
 
-import net.ymate.module.oauth.connector.ICmsOAuthConnector;
+import net.ymate.module.oauth.connector.IOAuthConnector;
 import net.ymate.module.oauth.connector.IOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.annotation.OAuthConnectProcessor;
 import net.ymate.platform.core.beans.IBeanHandler;
@@ -27,9 +27,9 @@ import net.ymate.platform.core.util.ClassUtils;
  */
 public class OAuthConnectProcessorHandler implements IBeanHandler {
 
-    private ICmsOAuthConnector __owner;
+    private IOAuthConnector __owner;
 
-    public OAuthConnectProcessorHandler(ICmsOAuthConnector owner) {
+    public OAuthConnectProcessorHandler(IOAuthConnector owner) {
         __owner = owner;
     }
 

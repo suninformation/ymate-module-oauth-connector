@@ -15,26 +15,43 @@
  */
 package net.ymate.module.oauth.connector;
 
+import net.ymate.platform.core.YMP;
+
 /**
  * @author 刘镇 (suninformation@163.com) on 2017/03/27 上午 01:31
  * @version 1.0
  */
-public interface ICmsOAuthConnectorModuleCfg {
+public interface IOAuthConnector {
+
+    String MODULE_NAME = "module.oauth.connector";
 
     /**
-     * @return 缓存名称前缀, 默认值: ""
+     * @return 返回所属YMP框架管理器实例
      */
-    String getCacheNamePrefix();
+    YMP getOwner();
+
+    /**
+     * @return 返回模块配置对象
+     */
+    IOAuthConnectorModuleCfg getModuleCfg();
+
+    /**
+     * @return 返回模块是否已初始化
+     */
+    boolean isInited();
+
+    /**
+     * 注册第三方授权连接器
+     *
+     * @param name        处理器名称
+     * @param targetClass 目标类型
+     * @throws Exception 可能产生的任何异常
+     */
+    void registerConnectProcessorHandler(String name, Class<? extends IOAuthConnectProcessor> targetClass) throws Exception;
 
     /**
      * @param name 连接器名称
-     * @return 获取指定连接器初始化配置
-     * @throws Exception 可能产生的任何异常
+     * @return 根据连接器名称获取实例对象
      */
-    IOAuthConnectProcessor.ConnectInitCfg getConnectInitCfg(String name) throws Exception;
-
-    /**
-     * @return 获取连接授权回调处理器接口实现
-     */
-    IOAuthConnectCallbackHandler getConnectCallbackHandler();
+    IOAuthConnectProcessor getConnectProcessor(String name);
 }

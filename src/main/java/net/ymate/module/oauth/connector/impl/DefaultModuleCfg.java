@@ -15,8 +15,8 @@
  */
 package net.ymate.module.oauth.connector.impl;
 
-import net.ymate.module.oauth.connector.ICmsOAuthConnector;
-import net.ymate.module.oauth.connector.ICmsOAuthConnectorModuleCfg;
+import net.ymate.module.oauth.connector.IOAuthConnector;
+import net.ymate.module.oauth.connector.IOAuthConnectorModuleCfg;
 import net.ymate.module.oauth.connector.IOAuthConnectCallbackHandler;
 import net.ymate.module.oauth.connector.IOAuthConnectProcessor;
 import net.ymate.platform.core.YMP;
@@ -31,7 +31,7 @@ import java.util.Map;
  * @author 刘镇 (suninformation@163.com) on 2017/03/27 上午 01:31
  * @version 1.0
  */
-public class DefaultModuleCfg implements ICmsOAuthConnectorModuleCfg {
+public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
 
     private String __cacheNamePrefix;
 
@@ -44,7 +44,7 @@ public class DefaultModuleCfg implements ICmsOAuthConnectorModuleCfg {
     private IPasswordProcessor __password;
 
     public DefaultModuleCfg(YMP owner) {
-        __moduleCfgs = owner.getConfig().getModuleConfigs(ICmsOAuthConnector.MODULE_NAME);
+        __moduleCfgs = owner.getConfig().getModuleConfigs(IOAuthConnector.MODULE_NAME);
         //
         __cacheNamePrefix = StringUtils.trimToEmpty(__moduleCfgs.get("cache_name_prefix"));
         //

@@ -30,7 +30,7 @@ public interface IOAuthConnectCallbackHandler {
      *
      * @param owner 所属模块实例
      */
-    void init(ICmsOAuthConnector owner);
+    void init(IOAuthConnector owner);
 
     /**
      * 连接调用操作前执行
