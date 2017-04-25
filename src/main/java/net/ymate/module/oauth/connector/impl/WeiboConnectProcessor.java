@@ -64,7 +64,7 @@ public class WeiboConnectProcessor extends AbstractOAuthConnectProcessor {
                             .setPhotoUrl(_result.getString("avatar_large"));
                     String _gender = _result.getString("gender");
                     if (StringUtils.equals(_gender, "f")) {
-                        _connectUser.setGender(OAuthConnectUser.Gender.FAMALE);
+                        _connectUser.setGender(OAuthConnectUser.Gender.FEMALE);
                     } else if (StringUtils.equals(_gender, "m")) {
                         _connectUser.setGender(OAuthConnectUser.Gender.MALE);
                     } else {

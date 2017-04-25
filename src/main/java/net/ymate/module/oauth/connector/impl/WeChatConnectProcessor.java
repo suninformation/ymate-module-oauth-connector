@@ -67,7 +67,7 @@ public class WeChatConnectProcessor extends AbstractOAuthConnectProcessor {
                             _connectUser.setGender(OAuthConnectUser.Gender.MALE);
                             break;
                         case 2:
-                            _connectUser.setGender(OAuthConnectUser.Gender.FAMALE);
+                            _connectUser.setGender(OAuthConnectUser.Gender.FEMALE);
                             break;
                         default:
                             _connectUser.setGender(OAuthConnectUser.Gender.UNKNOW);

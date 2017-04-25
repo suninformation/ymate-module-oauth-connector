@@ -151,7 +151,7 @@ public class OAuthConnectUser implements Serializable {
      */
     public enum Gender {
 
-        MALE(1), FAMALE(2), UNKNOW(0);
+        MALE(1), FEMALE(2), UNKNOW(0);
 
         private int code;
 
