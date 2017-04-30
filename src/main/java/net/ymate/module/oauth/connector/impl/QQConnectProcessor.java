@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import net.ymate.framework.commons.HttpClientHelper;
 import net.ymate.framework.commons.IHttpResponse;
+import net.ymate.framework.commons.ParamUtils;
 import net.ymate.module.oauth.connector.AbstractOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.OAuthConnectUser;
 import net.ymate.module.oauth.connector.annotation.OAuthConnectProcessor;
@@ -102,7 +103,8 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
             if (StringUtils.startsWith(response.getContent(), "callback")) {
                 _result = JSON.parseObject(StringUtils.substringBetween(response.getContent(), "callback(", ");"));
             } else {
-                _result = JSON.parseObject(response.getContent());
+                _result = new JSONObject();
+                _result.putAll(ParamUtils.parseQueryParamStr(response.getContent(), true, "UTF-8"));
             }
             if (_result.containsKey("error")) {
                 throw new RuntimeException(_result.toJSONString());
