@@ -70,7 +70,7 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
                 _params.put("openid", _connectUser.getOpenId());
                 //
                 IHttpResponse _response = HttpClientHelper.create().get(__USERINFO_URL, _params);
-                JSONObject _result = __doParseConnectResponseBody(_response);
+                JSONObject _result = super.__doParseConnectResponseBody(_response);
                 if (_result != null) {
                     int _ret = _result.getIntValue("ret");
                     if (_ret == 0) {
