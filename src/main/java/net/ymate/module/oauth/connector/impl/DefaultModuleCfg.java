@@ -15,10 +15,10 @@
  */
 package net.ymate.module.oauth.connector.impl;
 
-import net.ymate.module.oauth.connector.IOAuthConnector;
-import net.ymate.module.oauth.connector.IOAuthConnectorModuleCfg;
 import net.ymate.module.oauth.connector.IOAuthConnectCallbackHandler;
 import net.ymate.module.oauth.connector.IOAuthConnectProcessor;
+import net.ymate.module.oauth.connector.IOAuthConnector;
+import net.ymate.module.oauth.connector.IOAuthConnectorModuleCfg;
 import net.ymate.platform.core.YMP;
 import net.ymate.platform.core.lang.BlurObject;
 import net.ymate.platform.core.support.IPasswordProcessor;

@@ -16,17 +16,20 @@
 package net.ymate.module.oauth.connector.controller;
 
 import net.ymate.framework.commons.ParamUtils;
-import net.ymate.module.oauth.connector.OAuthConnector;
+import net.ymate.framework.webmvc.intercept.UserSessionStatusInterceptor;
 import net.ymate.module.oauth.connector.IOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.OAuthConnectUser;
+import net.ymate.module.oauth.connector.OAuthConnector;
+import net.ymate.platform.core.beans.annotation.Before;
 import net.ymate.platform.webmvc.annotation.Controller;
 import net.ymate.platform.webmvc.annotation.PathVariable;
 import net.ymate.platform.webmvc.annotation.RequestMapping;
 import net.ymate.platform.webmvc.annotation.RequestParam;
 import net.ymate.platform.webmvc.view.IView;
 import net.ymate.platform.webmvc.view.View;
-import net.ymate.platform.webmvc.view.impl.HttpStatusView;
 import org.apache.commons.lang.StringUtils;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/3/27 上午11:30
@@ -34,6 +37,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @Controller
 @RequestMapping("/oauth2/connect")
+@Before(UserSessionStatusInterceptor.class)
 public class OAuthConnectController {
 
     /**
@@ -47,11 +51,14 @@ public class OAuthConnectController {
         IOAuthConnectProcessor _processor = OAuthConnector.get().getConnectProcessor(connectName);
         if (_processor != null) {
             state = StringUtils.defaultIfBlank(state, ParamUtils.createNonceStr());
-            OAuthConnector.get().getModuleCfg().getConnectCallbackHandler().connect(connectName, state);
+            IView _view = OAuthConnector.get().getModuleCfg().getConnectCallbackHandler().connect(connectName, state);
             //
-            return View.redirectView(_processor.getAuthorizeUrl(state));
+            if (_view == null) {
+                return View.redirectView(_processor.getAuthorizeUrl(state));
+            }
+            return _view;
         }
-        return HttpStatusView.NOT_FOUND;
+        return View.httpStatusView(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     /**
@@ -65,10 +72,10 @@ public class OAuthConnectController {
         IOAuthConnectProcessor _processor = OAuthConnector.get().getConnectProcessor(connectName);
         if (_processor != null) {
             OAuthConnectUser _connectUser = _processor.getConnectUser(code);
-            if (_connectUser != null) {
+            if (_connectUser != null && StringUtils.isNotBlank(_connectUser.getOpenId())) {
                 return OAuthConnector.get().getModuleCfg().getConnectCallbackHandler().handle(connectName, _connectUser, state);
             }
         }
-        return HttpStatusView.NOT_FOUND;
+        return View.httpStatusView(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

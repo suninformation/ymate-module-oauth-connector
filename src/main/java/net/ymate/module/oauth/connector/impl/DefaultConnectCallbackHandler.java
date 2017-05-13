@@ -16,8 +16,8 @@
 package net.ymate.module.oauth.connector.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import net.ymate.module.oauth.connector.IOAuthConnector;
 import net.ymate.module.oauth.connector.IOAuthConnectCallbackHandler;
+import net.ymate.module.oauth.connector.IOAuthConnector;
 import net.ymate.module.oauth.connector.OAuthConnectUser;
 import net.ymate.platform.webmvc.context.WebContext;
 import net.ymate.platform.webmvc.util.CookieHelper;
@@ -41,8 +41,9 @@ public class DefaultConnectCallbackHandler implements IOAuthConnectCallbackHandl
         __cookieName = owner.getModuleCfg().getCacheNamePrefix() + IOAuthConnector.MODULE_NAME + "_state";
     }
 
-    public void connect(String connectName, String state) throws Exception {
+    public IView connect(String connectName, String state) throws Exception {
         CookieHelper.bind(WebContext.getContext().getOwner()).setCookie(__cookieName, __doEncryptState(connectName, state));
+        return null;
     }
 
     public IView handle(String connectName, OAuthConnectUser connectUser, String state) throws Exception {

@@ -37,9 +37,10 @@ public interface IOAuthConnectCallbackHandler {
      *
      * @param connectName 连接器名称
      * @param state       自定义状态值(用于防CSRF攻击)
+     * @return 自定义视图对象, 默认返回空则跳转授权
      * @throws Exception 可能产生的任何异常
      */
-    void connect(String connectName, String state) throws Exception;
+    IView connect(String connectName, String state) throws Exception;
 
     /**
      * @param connectName 连接器名称

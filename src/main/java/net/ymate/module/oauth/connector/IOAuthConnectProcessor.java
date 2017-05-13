@@ -15,9 +15,14 @@
  */
 package net.ymate.module.oauth.connector;
 
+import net.ymate.framework.commons.ParamUtils;
+import net.ymate.framework.core.Optional;
 import net.ymate.framework.core.util.WebUtils;
 import net.ymate.platform.webmvc.context.WebContext;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/3/27 上午11:40
@@ -75,6 +80,12 @@ public interface IOAuthConnectProcessor {
         public String getRedirectUri() {
             if (StringUtils.isBlank(redirectUri)) {
                 redirectUri = WebUtils.buildURL(WebContext.getRequest(), "/oauth2/connect/" + name + "/redirect", true);
+            }
+            String _redirectUrl = WebContext.getRequest().getParameter(Optional.REDIRECT_URL);
+            if (StringUtils.isNotBlank(_redirectUrl)) {
+                Map<String, String> _params = new HashMap<String, String>();
+                _params.put(Optional.REDIRECT_URL, _redirectUrl);
+                return ParamUtils.appendQueryParamValue(redirectUri, _params, true, "UTF-8");
             }
             return redirectUri;
         }
