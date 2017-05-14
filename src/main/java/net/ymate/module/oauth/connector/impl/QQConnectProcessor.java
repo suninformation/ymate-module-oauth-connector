@@ -43,6 +43,11 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
 
     private static final String __USERINFO_URL = "https://graph.qq.com/user/get_user_info?";
 
+    public QQConnectProcessor() {
+        super();
+        this.__doSetNeedRedirectUri(true);
+    }
+
     public String getAuthorizeUrl(String state) {
         return __CONNECT_URL + __doBuildAuthzUrl(null, state, true);
     }

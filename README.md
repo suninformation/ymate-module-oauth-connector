@@ -1,4 +1,4 @@
-### OAuth Connector
+### YMP-OAuth-Connector
 
 基于YMP框架实现的第三方OAuth授权登录模块, 目前已实现:
 
@@ -7,8 +7,8 @@
 |github|通过|
 |weibo|通过|
 |baidu|通过|
+|qq|通过|
 |wechat|未测试|
-|qq|未测试|
 |oschina|未测试|
 |google|待实现|
 |linkedin|待实现|
