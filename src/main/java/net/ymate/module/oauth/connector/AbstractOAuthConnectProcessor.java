@@ -21,6 +21,8 @@ import net.ymate.framework.commons.HttpClientHelper;
 import net.ymate.framework.commons.IHttpResponse;
 import net.ymate.framework.commons.ParamUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
 
 import java.util.HashMap;
@@ -31,6 +33,8 @@ import java.util.Map;
  * @version 1.0
  */
 public abstract class AbstractOAuthConnectProcessor implements IOAuthConnectProcessor {
+
+    private static final Log _LOG = LogFactory.getLog(AbstractOAuthConnectProcessor.class);
 
     private String __clientParamName;
 
@@ -131,12 +135,16 @@ public abstract class AbstractOAuthConnectProcessor implements IOAuthConnectProc
      * @throws Exception 可能产生的任何异常
      */
     protected JSONObject __doParseConnectResponseBody(IHttpResponse response) throws Exception {
-        if (response != null && response.getStatusCode() == 200) {
-            JSONObject _result = JSON.parseObject(response.getContent());
-            if (_result.containsKey(__errorFlag)) {
-                throw new RuntimeException(_result.toJSONString());
+        if (response != null) {
+            if (response.getStatusCode() == 200) {
+                JSONObject _result = JSON.parseObject(response.getContent());
+                if (_result.containsKey(__errorFlag)) {
+                    throw new RuntimeException(_result.toJSONString());
+                }
+                return _result;
+            } else if (_LOG.isDebugEnabled()) {
+                _LOG.debug("ResponseBody: " + response.toString());
             }
-            return _result;
         }
         return null;
     }

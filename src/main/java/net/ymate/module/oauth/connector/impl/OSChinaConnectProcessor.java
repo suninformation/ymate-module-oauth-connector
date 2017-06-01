@@ -22,6 +22,8 @@ import net.ymate.module.oauth.connector.AbstractOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.OAuthConnectUser;
 import net.ymate.module.oauth.connector.annotation.OAuthConnectProcessor;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/4/4 上午12:58
@@ -43,6 +45,11 @@ public class OSChinaConnectProcessor extends AbstractOAuthConnectProcessor {
 
     public String getAuthorizeUrl(String state) {
         return __CONNECT_URL + __doBuildAuthzUrl(null, state, true);
+    }
+
+    @Override
+    protected Header[] __doGetRequestHeaders() {
+        return new Header[]{new BasicHeader("Accept", "application/json"), new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")};
     }
 
     public OAuthConnectUser getConnectUser(String code) throws Exception {

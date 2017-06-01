@@ -22,6 +22,8 @@ import net.ymate.module.oauth.connector.AbstractOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.OAuthConnectUser;
 import net.ymate.module.oauth.connector.annotation.OAuthConnectProcessor;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/26 下午5:27
@@ -32,7 +34,7 @@ public class GitOSCConnectProcessor extends AbstractOAuthConnectProcessor {
 
     private static final String __CONNECT_URL = "http://git.oschina.net/oauth/authorize?";
 
-    private static final String __TOKEN_URL = "http://git.oschina.net/oauth/token?";
+    private static final String __TOKEN_URL = "http://git.oschina.net/oauth/token";
 
     private static final String __USERINFO_URL = "https://git.oschina.net/api/v5/user?access_token=";
 
@@ -45,11 +47,16 @@ public class GitOSCConnectProcessor extends AbstractOAuthConnectProcessor {
         return __CONNECT_URL + __doBuildAuthzUrl("user_info", state, true);
     }
 
+    @Override
+    protected Header[] __doGetRequestHeaders() {
+        return new Header[]{new BasicHeader("Accept", "application/json"), new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")};
+    }
+
     public OAuthConnectUser getConnectUser(String code) throws Exception {
-        OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL);
+        OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL, true);
         if (_connectUser != null) {
             if (StringUtils.isNotBlank(_connectUser.getAccessToken())) {
-                IHttpResponse _response = HttpClientHelper.create().get(__USERINFO_URL.concat(_connectUser.getAccessToken()));
+                IHttpResponse _response = HttpClientHelper.create().get(__USERINFO_URL.concat(_connectUser.getAccessToken()), __doGetRequestHeaders());
                 JSONObject _result = __doParseConnectResponseBody(_response);
                 if (_result != null) {
                     _connectUser.setOpenId(_result.getString("id"))

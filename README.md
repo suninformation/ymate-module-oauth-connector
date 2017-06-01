@@ -9,8 +9,8 @@
 |baidu|通过|
 |qq|通过|
 |wechat|未测试|
-|gitosc|测试未审核|
-|oschina|测试未审核|
+|gitosc|通过|
+|oschina|通过|
 |google|待实现|
 |linkedin|待实现|
 |windowslive|待实现|
