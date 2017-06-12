@@ -60,8 +60,8 @@ public abstract class AbstractOAuthConnectProcessor implements IOAuthConnectProc
     }
 
     public AbstractOAuthConnectProcessor(String clientParamName, String secretParamName, String openIdParamName) {
-        __clientParamName = StringUtils.defaultIfBlank(__clientParamName, "client_id");
-        __secretParamName = StringUtils.defaultIfBlank(__secretParamName, "client_secret");
+        __clientParamName = StringUtils.defaultIfBlank(clientParamName, "client_id");
+        __secretParamName = StringUtils.defaultIfBlank(secretParamName, "client_secret");
         __openIdParamName = openIdParamName;
     }
 
