@@ -38,8 +38,6 @@
         # 控制器请求映射路径分析器，，可选值为已知分析器名称或自定义分析器类名称，默认为default，目前支持已知分析器[default|restful|...]
         ymp.configs.webmvc.request_mapping_parser_class=restful
 
-> **注**: 推荐将YMP框架更新至最新(Maven中央库发布的版本较缓), [请前往下载最新代码](https://github.com/suninformation/ymate-platform-v2)  
-
 ### 模块配置参数说明
 
     #-------------------------------------
