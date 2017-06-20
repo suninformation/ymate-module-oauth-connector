@@ -8,7 +8,7 @@
 |weibo|通过|
 |baidu|通过|
 |qq|通过|
-|wechat|未测试|
+|wechat|通过|
 |gitosc|通过|
 |oschina|通过|
 |google|待实现|
