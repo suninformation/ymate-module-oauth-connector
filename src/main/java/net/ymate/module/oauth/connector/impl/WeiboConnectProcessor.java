@@ -45,10 +45,12 @@ public class WeiboConnectProcessor extends AbstractOAuthConnectProcessor {
         this.__doSetNeedRedirectUri(true);
     }
 
+    @Override
     public String getAuthorizeUrl(String state) {
         return __CONNECT_URL + __doBuildAuthzUrl("email", state, true);
     }
 
+    @Override
     public OAuthConnectUser getConnectUser(String code) throws Exception {
         OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL, true);
         if (_connectUser != null) {

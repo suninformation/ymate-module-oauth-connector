@@ -61,10 +61,12 @@ public class OAuthConnector implements IModule, IOAuthConnector {
         return __instance;
     }
 
+    @Override
     public String getName() {
         return IOAuthConnector.MODULE_NAME;
     }
 
+    @Override
     public void init(YMP owner) throws Exception {
         if (!__inited) {
             //
@@ -82,10 +84,12 @@ public class OAuthConnector implements IModule, IOAuthConnector {
         }
     }
 
+    @Override
     public boolean isInited() {
         return __inited;
     }
 
+    @Override
     public void registerConnectProcessorHandler(String name, Class<? extends IOAuthConnectProcessor> targetClass) throws Exception {
         if (StringUtils.isNotBlank(name) && targetClass != null) {
             IOAuthConnectProcessor.ConnectInitCfg _initCfg = __moduleCfg.getConnectInitCfg(name);
@@ -100,10 +104,12 @@ public class OAuthConnector implements IModule, IOAuthConnector {
         }
     }
 
+    @Override
     public IOAuthConnectProcessor getConnectProcessor(String name) {
         return __connectProcessors.get(name);
     }
 
+    @Override
     public void destroy() throws Exception {
         if (__inited) {
             __inited = false;
@@ -113,10 +119,12 @@ public class OAuthConnector implements IModule, IOAuthConnector {
         }
     }
 
+    @Override
     public YMP getOwner() {
         return __owner;
     }
 
+    @Override
     public IOAuthConnectorModuleCfg getModuleCfg() {
         return __moduleCfg;
     }

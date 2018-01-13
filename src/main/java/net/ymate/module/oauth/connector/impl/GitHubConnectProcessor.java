@@ -38,6 +38,7 @@ public class GitHubConnectProcessor extends AbstractOAuthConnectProcessor {
 
     private static final String __USERINFO_URL = "https://api.github.com/user?access_token=";
 
+    @Override
     public String getAuthorizeUrl(String state) {
         return __CONNECT_URL + __doBuildAuthzUrl("user", state, false);
     }
@@ -47,6 +48,7 @@ public class GitHubConnectProcessor extends AbstractOAuthConnectProcessor {
         return new Header[]{new BasicHeader("Accept", "application/json")};
     }
 
+    @Override
     public OAuthConnectUser getConnectUser(String code) throws Exception {
         OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL);
         if (_connectUser != null) {

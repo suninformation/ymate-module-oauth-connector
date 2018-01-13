@@ -61,10 +61,12 @@ public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
         }
     }
 
+    @Override
     public String getCacheNamePrefix() {
         return __cacheNamePrefix;
     }
 
+    @Override
     public IOAuthConnectProcessor.ConnectInitCfg getConnectInitCfg(String name) throws Exception {
         String _clientId = __moduleCfgs.get(name + ".client_id");
         String _clientSecret = __moduleCfgs.get(name + ".client_secret");
@@ -76,15 +78,8 @@ public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
         return new IOAuthConnectProcessor.ConnectInitCfg(name, _clientId, _clientSecret, __moduleCfgs.get(name + ".redirect_uri"));
     }
 
+    @Override
     public IOAuthConnectCallbackHandler getConnectCallbackHandler() {
         return __callbackHandler;
-    }
-
-    public boolean isPasswordEncrypted() {
-        return false;
-    }
-
-    public Class<? extends IPasswordProcessor> getPasswordClass() {
-        return null;
     }
 }

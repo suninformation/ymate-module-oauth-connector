@@ -63,6 +63,7 @@ public class OAuthConnectController {
 
     /**
      * @param connectName 连接器名称
+     * @param code        授权CODE
      * @param state       自定义状态值(用于防CSRF攻击)
      * @return 接收第三方授权后的回调处理
      * @throws Exception 可能产生的任何异常

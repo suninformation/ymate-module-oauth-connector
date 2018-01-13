@@ -37,15 +37,18 @@ public class DefaultConnectCallbackHandler implements IOAuthConnectCallbackHandl
 
     private String __cookieName;
 
+    @Override
     public void init(IOAuthConnector owner) {
         __cookieName = owner.getModuleCfg().getCacheNamePrefix() + IOAuthConnector.MODULE_NAME + "_state";
     }
 
+    @Override
     public IView connect(String connectName, String state) throws Exception {
         CookieHelper.bind(WebContext.getContext().getOwner()).setCookie(__cookieName, __doEncryptState(connectName, state));
         return null;
     }
 
+    @Override
     public IView handle(String connectName, OAuthConnectUser connectUser, String state) throws Exception {
         CookieHelper _helper = CookieHelper.bind(WebContext.getContext().getOwner());
         try {

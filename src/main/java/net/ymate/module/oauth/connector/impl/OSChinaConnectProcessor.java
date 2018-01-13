@@ -43,6 +43,7 @@ public class OSChinaConnectProcessor extends AbstractOAuthConnectProcessor {
         this.__doSetNeedRedirectUri(true);
     }
 
+    @Override
     public String getAuthorizeUrl(String state) {
         return __CONNECT_URL + __doBuildAuthzUrl(null, state, true);
     }
@@ -52,6 +53,7 @@ public class OSChinaConnectProcessor extends AbstractOAuthConnectProcessor {
         return new Header[]{new BasicHeader("Accept", "application/json"), new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")};
     }
 
+    @Override
     public OAuthConnectUser getConnectUser(String code) throws Exception {
         OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL);
         if (_connectUser != null) {

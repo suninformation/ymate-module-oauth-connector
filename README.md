@@ -20,7 +20,7 @@
     <dependency>
         <groupId>net.ymate.module</groupId>
         <artifactId>ymate-module-oauth-connector</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
 
 
@@ -32,11 +32,6 @@
 
         # 框架自动扫描的包路径集合，多个包名之间用'|'分隔，默认已包含net.ymate.platform包，其子包也将被扫描
         ymp.autoscan_packages=net.ymate
-
-- 调整`WebMvc`模块中配置如下：
-
-        # 控制器请求映射路径分析器，，可选值为已知分析器名称或自定义分析器类名称，默认为default，目前支持已知分析器[default|restful|...]
-        ymp.configs.webmvc.request_mapping_parser_class=restful
 
 ### 模块配置参数说明
 
@@ -73,11 +68,11 @@
 
 - 申请并配置好OAuth客户端ID和密钥(访问`https://github.com/settings/developers`进行申请);
 
-- 在申请过程中需要填写`redirect_uri`地址, 请填写: `http://<你的域名>/oauth/connect/github/redirect`;
+- 在申请过程中需要填写`redirect_uri`地址, 请填写: `http://<你的域名>/oauth2/connect/github/redirect`;
 
 - 打包工程并部署到目标服务器;
 
-- 打开浏览器并输入网址, 如: `http://<你的域名>/oauth/connect/github` 进行授权测试;
+- 打开浏览器并输入网址, 如: `http://<你的域名>/oauth2/connect/github` 进行授权测试;
 
 - 如果OAuth请求授权成功，则默认`callback_handler_class`处理器将为你显示回应的JSON数据, 接下来请自行编写`IOAuthConnectCallbackHandler`接口实现来存储授权信息吧:)
 

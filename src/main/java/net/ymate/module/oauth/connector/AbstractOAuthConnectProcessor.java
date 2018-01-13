@@ -65,6 +65,7 @@ public abstract class AbstractOAuthConnectProcessor implements IOAuthConnectProc
         __openIdParamName = openIdParamName;
     }
 
+    @Override
     public void init(ConnectInitCfg initCfg) {
         __initCfg = initCfg;
     }

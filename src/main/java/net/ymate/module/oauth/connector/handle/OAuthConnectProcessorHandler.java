@@ -33,6 +33,7 @@ public class OAuthConnectProcessorHandler implements IBeanHandler {
         __owner = owner;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Object handle(Class<?> targetClass) throws Exception {
         if (ClassUtils.isInterfaceOf(targetClass, IOAuthConnectProcessor.class)) {

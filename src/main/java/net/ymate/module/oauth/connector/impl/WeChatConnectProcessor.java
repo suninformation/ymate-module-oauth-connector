@@ -44,10 +44,12 @@ public class WeChatConnectProcessor extends AbstractOAuthConnectProcessor {
         __doSetErrorFlag("errcode");
     }
 
+    @Override
     public String getAuthorizeUrl(String state) {
         return __CONNECT_URL + __doBuildAuthzUrl("snsapi_login", state, true) + "#wechat_redirect";
     }
 
+    @Override
     public OAuthConnectUser getConnectUser(String code) throws Exception {
         OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL);
         if (_connectUser != null) {
