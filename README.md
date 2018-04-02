@@ -26,7 +26,7 @@
 
 #### 搭建模块工程
 
-- 首先，你需要创建一个基于YMPv2框架的JavaWeb工程项目；（[如何快速搭建工程?](http://git.oschina.net/suninformation/ymate-platform-v2/wikis/Quickstart_New)）
+- 首先，你需要创建一个基于YMPv2框架的JavaWeb工程项目；（[如何快速搭建工程?](https://gitee.com/suninformation/ymate-platform-v2/wikis/Quickstart_New)）
 
 - YMP框架扫描包路径要包含`net.ymate.module.oauth.connector`, 调整配置如下:
 
