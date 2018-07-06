@@ -9,7 +9,7 @@
 |baidu|通过|
 |qq|通过|
 |wechat|通过|
-|gitosc|通过|
+|gitee|通过|
 |oschina|通过|
 |google|待实现|
 |linkedin|待实现|
@@ -52,7 +52,7 @@
     ymp.configs.module.oauth.connector.password_class=
     
     #--------------------------
-    # 以下为各连接器的初始化配置, xxx表示连接器名称, 目前支持[github|wechat|qq|weibo|oschina|baidu|google|linkedin|windowslive]
+    # 以下为各连接器的初始化配置, xxx表示连接器名称, 目前支持[github|wechat|qq|weibo|gitee|oschina|baidu]
     #--------------------------
     
     # OAuth客户端ID, 必选项

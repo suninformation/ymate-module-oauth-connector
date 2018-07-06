@@ -29,16 +29,14 @@ import org.apache.http.message.BasicHeader;
  * @author 刘镇 (suninformation@163.com) on 17/5/26 下午5:27
  * @version 1.0
  */
-@OAuthConnectProcessor("gitosc")
-public class GitOSCConnectProcessor extends AbstractOAuthConnectProcessor {
+@OAuthConnectProcessor("gitee")
+public class GiteeConnectProcessor extends AbstractOAuthConnectProcessor {
 
-    private static final String __CONNECT_URL = "http://git.oschina.net/oauth/authorize?";
+    private static final String __CONNECT_URL = "https://gitee.com/oauth/authorize?";
 
-    private static final String __TOKEN_URL = "http://git.oschina.net/oauth/token";
+    private static final String __TOKEN_URL = "https://gitee.com/oauth/token";
 
-    private static final String __USERINFO_URL = "https://git.oschina.net/api/v5/user?access_token=";
-
-    public GitOSCConnectProcessor() {
+    public GiteeConnectProcessor() {
         super();
         this.__doSetNeedRedirectUri(true);
     }
@@ -58,12 +56,10 @@ public class GitOSCConnectProcessor extends AbstractOAuthConnectProcessor {
         OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL, true);
         if (_connectUser != null) {
             if (StringUtils.isNotBlank(_connectUser.getAccessToken())) {
-                IHttpResponse _response = HttpClientHelper.create().get(__USERINFO_URL.concat(_connectUser.getAccessToken()), __doGetRequestHeaders());
+                IHttpResponse _response = HttpClientHelper.create().get("https://gitee.com/api/v5/user?access_token=".concat(_connectUser.getAccessToken()), __doGetRequestHeaders());
                 JSONObject _result = __doParseConnectResponseBody(_response);
                 if (_result != null) {
-                    _connectUser.setOpenId(_result.getString("id"))
-                            .setNickName(_result.getString("login"))
-                            .setPhotoUrl(_result.getString("avatar_url"));
+                    _connectUser.setOpenId(_result.getString("id")).setNickName(_result.getString("login")).setPhotoUrl(_result.getString("avatar_url"));
                 }
             }
         }
