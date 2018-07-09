@@ -23,9 +23,12 @@ import net.ymate.platform.core.YMP;
 import net.ymate.platform.core.lang.BlurObject;
 import net.ymate.platform.core.support.IPasswordProcessor;
 import net.ymate.platform.core.util.ClassUtils;
+import net.ymate.platform.core.util.RuntimeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2017/03/27 上午 01:31
@@ -42,6 +45,8 @@ public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
     private boolean __isPasswordEncrypted;
 
     private IPasswordProcessor __password;
+
+    private Map<String, IOAuthConnectProcessor.ConnectInitCfg> __connectInitCfgs = new ConcurrentHashMap<String, IOAuthConnectProcessor.ConnectInitCfg>();
 
     public DefaultModuleCfg(YMP owner) {
         __moduleCfgs = owner.getConfig().getModuleConfigs(IOAuthConnector.MODULE_NAME);
@@ -68,14 +73,35 @@ public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
 
     @Override
     public IOAuthConnectProcessor.ConnectInitCfg getConnectInitCfg(String name) throws Exception {
-        String _clientId = __moduleCfgs.get(name + ".client_id");
-        String _clientSecret = __moduleCfgs.get(name + ".client_secret");
-        if (StringUtils.isBlank(_clientId) || StringUtils.isBlank(_clientSecret)) {
-            return null;
-        } else if (__isPasswordEncrypted && __password != null) {
-            _clientSecret = __password.decrypt(_clientSecret);
+        IOAuthConnectProcessor.ConnectInitCfg _initCfg = __connectInitCfgs.get(name);
+        if (_initCfg == null) {
+            String _clientId = null;
+            String _clientSecret = null;
+            String _redirectUrl = null;
+            //
+            Map<String, String> _attributes = new HashMap<String, String>();
+            Map<String, String> _cfgMap = RuntimeUtils.keyStartsWith(__moduleCfgs, name + ".");
+            for (Map.Entry<String, String> _entry : _cfgMap.entrySet()) {
+                if ("client_id".equalsIgnoreCase(_entry.getKey())) {
+                    _clientId = _entry.getValue();
+                } else if ("client_secret".equalsIgnoreCase(_entry.getValue())) {
+                    _clientSecret = _entry.getValue();
+                } else if ("redirect_uri".equalsIgnoreCase(_entry.getValue())) {
+                    _redirectUrl = _entry.getValue();
+                } else {
+                    _attributes.put(_entry.getKey(), _entry.getValue());
+                }
+            }
+            if (StringUtils.isBlank(_clientId) && StringUtils.isBlank(_clientSecret)) {
+                if (__isPasswordEncrypted && __password != null) {
+                    _clientSecret = __password.decrypt(_clientSecret);
+                }
+                _initCfg = new IOAuthConnectProcessor.ConnectInitCfg(name, _clientId, _clientSecret, _redirectUrl, _attributes);
+                //
+                __connectInitCfgs.put(name, _initCfg);
+            }
         }
-        return new IOAuthConnectProcessor.ConnectInitCfg(name, _clientId, _clientSecret, __moduleCfgs.get(name + ".redirect_uri"));
+        return _initCfg;
     }
 
     @Override

@@ -21,6 +21,7 @@ import net.ymate.framework.core.util.WebUtils;
 import net.ymate.platform.webmvc.context.WebContext;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,11 +59,15 @@ public interface IOAuthConnectProcessor {
 
         private String redirectUri;
 
-        public ConnectInitCfg(String name, String clientId, String clientSecret, String redirectUri) {
+        private Map<String, String> attributes;
+
+        public ConnectInitCfg(String name, String clientId, String clientSecret, String redirectUri, Map<String, String> attributes) {
             this.name = name;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
             this.redirectUri = redirectUri;
+            //
+            this.attributes = attributes != null ? attributes : Collections.<String, String>emptyMap();
         }
 
         public String getName() {
@@ -88,6 +93,14 @@ public interface IOAuthConnectProcessor {
                 return ParamUtils.appendQueryParamValue(redirectUri, _params, true, "UTF-8");
             }
             return redirectUri;
+        }
+
+        public String getAttribute(String attrKey) {
+            return this.attributes.get(attrKey);
+        }
+
+        public Map<String, String> getAttributes() {
+            return Collections.unmodifiableMap(attributes);
         }
     }
 }
