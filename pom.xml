@@ -6,7 +6,7 @@
 
     <groupId>net.ymate.module</groupId>
     <artifactId>ymate-module-oauth-connector</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>ymate-module-oauth-connector</name>

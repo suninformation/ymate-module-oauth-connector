@@ -11,16 +11,16 @@
 |wechat|通过|
 |gitee|通过|
 |oschina|通过|
-|google|待实现|
-|linkedin|待实现|
-|windowslive|待实现|
+|google|-|
+|linkedin|-|
+|windowslive|-|
 
 #### Maven包依赖
 
     <dependency>
         <groupId>net.ymate.module</groupId>
         <artifactId>ymate-module-oauth-connector</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
 
 

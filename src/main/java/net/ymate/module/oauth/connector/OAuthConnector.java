@@ -38,7 +38,7 @@ public class OAuthConnector implements IModule, IOAuthConnector {
 
     private static final Log _LOG = LogFactory.getLog(OAuthConnector.class);
 
-    public static final Version VERSION = new Version(1, 0, 0, OAuthConnector.class.getPackage().getImplementationVersion(), Version.VersionType.Release);
+    public static final Version VERSION = new Version(1, 0, 1, OAuthConnector.class.getPackage().getImplementationVersion(), Version.VersionType.Release);
 
     private static volatile IOAuthConnector __instance;
 
