@@ -20,10 +20,9 @@ import net.ymate.module.oauth.connector.IOAuthConnectProcessor;
 import net.ymate.module.oauth.connector.IOAuthConnector;
 import net.ymate.module.oauth.connector.IOAuthConnectorModuleCfg;
 import net.ymate.platform.core.YMP;
-import net.ymate.platform.core.lang.BlurObject;
+import net.ymate.platform.core.support.IConfigReader;
 import net.ymate.platform.core.support.IPasswordProcessor;
-import net.ymate.platform.core.util.ClassUtils;
-import net.ymate.platform.core.util.RuntimeUtils;
+import net.ymate.platform.core.support.impl.MapSafeConfigReader;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
@@ -34,11 +33,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author 刘镇 (suninformation@163.com) on 2017/03/27 上午 01:31
  * @version 1.0
  */
-public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
+public class DefaultOAuthConnectorModuleCfg implements IOAuthConnectorModuleCfg {
+
+    private YMP __owner;
 
     private String __cacheNamePrefix;
 
-    private Map<String, String> __moduleCfgs;
+    private IConfigReader __moduleCfg;
 
     private IOAuthConnectCallbackHandler __callbackHandler;
 
@@ -48,21 +49,24 @@ public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
 
     private Map<String, IOAuthConnectProcessor.ConnectInitCfg> __connectInitCfgs = new ConcurrentHashMap<String, IOAuthConnectProcessor.ConnectInitCfg>();
 
-    public DefaultModuleCfg(YMP owner) {
-        __moduleCfgs = owner.getConfig().getModuleConfigs(IOAuthConnector.MODULE_NAME);
+    public DefaultOAuthConnectorModuleCfg(YMP owner) {
+        __owner = owner;
+        __moduleCfg = MapSafeConfigReader.bind(owner.getConfig().getModuleConfigs(IOAuthConnector.MODULE_NAME));
         //
-        __cacheNamePrefix = StringUtils.trimToEmpty(__moduleCfgs.get("cache_name_prefix"));
+        __cacheNamePrefix = StringUtils.trimToEmpty(__moduleCfg.getString(CACHE_NAME_PREFIX));
         //
-        __callbackHandler = ClassUtils.impl(__moduleCfgs.get("callback_handler_class"), IOAuthConnectCallbackHandler.class, this.getClass());
+        __callbackHandler = __moduleCfg.getClassImpl(CALLBACK_HANDLER_CLASS, IOAuthConnectCallbackHandler.class);
         if (__callbackHandler == null) {
             __callbackHandler = new DefaultConnectCallbackHandler();
         }
         //
-        __isPasswordEncrypted = BlurObject.bind(__moduleCfgs.get("password_encrypted")).toBooleanValue();
+        __isPasswordEncrypted = __moduleCfg.getBoolean(PASSWORD_ENCRYPTED);
         //
-        try {
-            __password = ClassUtils.impl(__moduleCfgs.get("password_class"), IPasswordProcessor.class, this.getClass());
-        } catch (Exception ignored) {
+        if (__isPasswordEncrypted) {
+            try {
+                __password = __moduleCfg.getClassImpl(PASSWORD_CLASS, IPasswordProcessor.class);
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -80,21 +84,25 @@ public class DefaultModuleCfg implements IOAuthConnectorModuleCfg {
             String _redirectUrl = null;
             //
             Map<String, String> _attributes = new HashMap<String, String>();
-            Map<String, String> _cfgMap = RuntimeUtils.keyStartsWith(__moduleCfgs, name + ".");
+            Map<String, String> _cfgMap = __moduleCfg.getMap(name + ".");
             for (Map.Entry<String, String> _entry : _cfgMap.entrySet()) {
-                if ("client_id".equalsIgnoreCase(_entry.getKey())) {
+                if (CLIENT_ID.equalsIgnoreCase(_entry.getKey())) {
                     _clientId = _entry.getValue();
-                } else if ("client_secret".equalsIgnoreCase(_entry.getValue())) {
+                } else if (CLIENT_SECRET.equalsIgnoreCase(_entry.getValue())) {
                     _clientSecret = _entry.getValue();
-                } else if ("redirect_uri".equalsIgnoreCase(_entry.getValue())) {
+                } else if (REDIRECT_URI.equalsIgnoreCase(_entry.getValue())) {
                     _redirectUrl = _entry.getValue();
                 } else {
                     _attributes.put(_entry.getKey(), _entry.getValue());
                 }
             }
             if (StringUtils.isBlank(_clientId) && StringUtils.isBlank(_clientSecret)) {
-                if (__isPasswordEncrypted && __password != null) {
-                    _clientSecret = __password.decrypt(_clientSecret);
+                if (__isPasswordEncrypted) {
+                    if (__password != null) {
+                        _clientSecret = __password.decrypt(_clientSecret);
+                    } else {
+                        _clientSecret = __owner.getConfig().getDefaultPasswordClass().newInstance().decrypt(_clientSecret);
+                    }
                 }
                 _initCfg = new IOAuthConnectProcessor.ConnectInitCfg(name, _clientId, _clientSecret, _redirectUrl, _attributes);
                 //

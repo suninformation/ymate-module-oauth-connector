@@ -16,9 +16,9 @@
 package net.ymate.module.oauth.connector;
 
 import net.ymate.framework.commons.ParamUtils;
-import net.ymate.framework.core.Optional;
-import net.ymate.framework.core.util.WebUtils;
+import net.ymate.platform.webmvc.base.Type;
 import net.ymate.platform.webmvc.context.WebContext;
+import net.ymate.platform.webmvc.util.WebUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
@@ -86,10 +86,10 @@ public interface IOAuthConnectProcessor {
             if (StringUtils.isBlank(redirectUri)) {
                 redirectUri = WebUtils.buildURL(WebContext.getRequest(), "/oauth2/connect/" + name + "/redirect", true);
             }
-            String _redirectUrl = WebContext.getRequest().getParameter(Optional.REDIRECT_URL);
+            String _redirectUrl = WebContext.getRequest().getParameter(Type.Const.REDIRECT_URL);
             if (StringUtils.isNotBlank(_redirectUrl)) {
                 Map<String, String> _params = new HashMap<String, String>();
-                _params.put(Optional.REDIRECT_URL, _redirectUrl);
+                _params.put(Type.Const.REDIRECT_URL, _redirectUrl);
                 return ParamUtils.appendQueryParamValue(redirectUri, _params, true, "UTF-8");
             }
             return redirectUri;

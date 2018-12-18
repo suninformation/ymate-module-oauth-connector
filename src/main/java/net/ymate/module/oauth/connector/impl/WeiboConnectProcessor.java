@@ -39,6 +39,10 @@ public class WeiboConnectProcessor extends AbstractOAuthConnectProcessor {
 
     private static final String __USERINFO_URL = "https://api.weibo.com/2/users/show.json";
 
+    private static final String M = "m";
+
+    private static final String F = "f";
+
     public WeiboConnectProcessor() {
         super("uid");
         this.__doSetErrorFlag("error_code");
@@ -62,12 +66,11 @@ public class WeiboConnectProcessor extends AbstractOAuthConnectProcessor {
                 IHttpResponse _response = HttpClientHelper.create().get(__USERINFO_URL, _params, __doGetRequestHeaders());
                 JSONObject _result = __doParseConnectResponseBody(_response);
                 if (_result != null) {
-                    _connectUser.setNickName(_result.getString("screen_name"))
-                            .setPhotoUrl(_result.getString("avatar_large"));
+                    _connectUser.setNickName(_result.getString("screen_name")).setPhotoUrl(_result.getString("avatar_large"));
                     String _gender = _result.getString("gender");
-                    if (StringUtils.equals(_gender, "f")) {
+                    if (F.equals(_gender)) {
                         _connectUser.setGender(OAuthConnectUser.Gender.FEMALE);
-                    } else if (StringUtils.equals(_gender, "m")) {
+                    } else if (M.equals(_gender)) {
                         _connectUser.setGender(OAuthConnectUser.Gender.MALE);
                     } else {
                         _connectUser.setGender(OAuthConnectUser.Gender.UNKNOW);

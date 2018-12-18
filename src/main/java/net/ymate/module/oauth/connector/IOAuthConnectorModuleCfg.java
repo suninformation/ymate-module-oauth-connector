@@ -21,6 +21,20 @@ package net.ymate.module.oauth.connector;
  */
 public interface IOAuthConnectorModuleCfg {
 
+    String CACHE_NAME_PREFIX = "cache_name_prefix";
+
+    String CALLBACK_HANDLER_CLASS = "callback_handler_class";
+
+    String PASSWORD_ENCRYPTED = "password_encrypted";
+
+    String PASSWORD_CLASS = "password_class";
+
+    String CLIENT_ID = "client_id";
+
+    String CLIENT_SECRET = "client_secret";
+
+    String REDIRECT_URI = "redirect_uri";
+
     /**
      * @return 缓存名称前缀, 默认值: ""
      */

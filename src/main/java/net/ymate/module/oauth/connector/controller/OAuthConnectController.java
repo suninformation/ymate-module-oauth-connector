@@ -47,7 +47,7 @@ public class OAuthConnectController {
      * @throws Exception 可能产生的任何异常
      */
     @RequestMapping("/{connectName}")
-    public IView __toConnect(@PathVariable String connectName, @RequestParam String state) throws Exception {
+    public IView __connect(@PathVariable String connectName, @RequestParam String state) throws Exception {
         IOAuthConnectProcessor _processor = OAuthConnector.get().getConnectProcessor(connectName);
         if (_processor != null) {
             state = StringUtils.defaultIfBlank(state, ParamUtils.createNonceStr());
@@ -69,7 +69,7 @@ public class OAuthConnectController {
      * @throws Exception 可能产生的任何异常
      */
     @RequestMapping("/{connectName}/redirect")
-    public IView __onRedirect(@PathVariable String connectName, @RequestParam String code, @RequestParam String state) throws Exception {
+    public IView __redirect(@PathVariable String connectName, @RequestParam String code, @RequestParam String state) throws Exception {
         IOAuthConnectProcessor _processor = OAuthConnector.get().getConnectProcessor(connectName);
         if (_processor != null) {
             OAuthConnectUser _connectUser = _processor.getConnectUser(code);

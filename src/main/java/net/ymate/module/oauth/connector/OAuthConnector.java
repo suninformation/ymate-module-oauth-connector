@@ -17,7 +17,7 @@ package net.ymate.module.oauth.connector;
 
 import net.ymate.module.oauth.connector.annotation.OAuthConnectProcessor;
 import net.ymate.module.oauth.connector.handle.OAuthConnectProcessorHandler;
-import net.ymate.module.oauth.connector.impl.DefaultModuleCfg;
+import net.ymate.module.oauth.connector.impl.DefaultOAuthConnectorModuleCfg;
 import net.ymate.platform.core.Version;
 import net.ymate.platform.core.YMP;
 import net.ymate.platform.core.module.IModule;
@@ -38,7 +38,7 @@ public class OAuthConnector implements IModule, IOAuthConnector {
 
     private static final Log _LOG = LogFactory.getLog(OAuthConnector.class);
 
-    public static final Version VERSION = new Version(1, 0, 0, OAuthConnector.class.getPackage().getImplementationVersion(), Version.VersionType.Alphal);
+    public static final Version VERSION = new Version(1, 0, 0, OAuthConnector.class.getPackage().getImplementationVersion(), Version.VersionType.Release);
 
     private static volatile IOAuthConnector __instance;
 
@@ -73,7 +73,7 @@ public class OAuthConnector implements IModule, IOAuthConnector {
             _LOG.info("Initializing ymate-module-oauth-connector-" + VERSION);
             //
             __owner = owner;
-            __moduleCfg = new DefaultModuleCfg(owner);
+            __moduleCfg = new DefaultOAuthConnectorModuleCfg(owner);
             __owner.registerHandler(OAuthConnectProcessor.class, new OAuthConnectProcessorHandler(this));
             //
             __moduleCfg.getConnectCallbackHandler().init(this);

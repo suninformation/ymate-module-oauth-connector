@@ -25,6 +25,7 @@ import net.ymate.module.oauth.connector.OAuthConnectUser;
 import net.ymate.module.oauth.connector.annotation.OAuthConnectProcessor;
 import org.apache.commons.lang.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,10 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
     private static final String __OPEN_ID_URL = "https://graph.qq.com/oauth2.0/me?access_token=";
 
     private static final String __USERINFO_URL = "https://graph.qq.com/user/get_user_info?";
+
+    private static final String M = "男";
+
+    private static final String F = "女";
 
     public QQConnectProcessor() {
         super();
@@ -87,9 +92,9 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
                             _connectUser.setPhotoUrl(_result.getString("figureurl_qq_1"));
                         }
                         String _gender = _result.getString("gender");
-                        if (StringUtils.equals(_gender, "女")) {
+                        if (F.equals(_gender)) {
                             _connectUser.setGender(OAuthConnectUser.Gender.FEMALE);
-                        } else if (StringUtils.equals(_gender, "男")) {
+                        } else if (M.equals(_gender)) {
                             _connectUser.setGender(OAuthConnectUser.Gender.MALE);
                         } else {
                             _connectUser.setGender(OAuthConnectUser.Gender.UNKNOW);
@@ -105,7 +110,7 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
 
     @Override
     protected JSONObject __doParseConnectResponseBody(IHttpResponse response) throws Exception {
-        if (response != null && response.getStatusCode() == 200) {
+        if (response != null && response.getStatusCode() == HttpServletResponse.SC_OK) {
             JSONObject _result = null;
             if (StringUtils.startsWith(response.getContent(), "callback")) {
                 _result = JSON.parseObject(StringUtils.substringBetween(response.getContent(), "callback(", ");"));

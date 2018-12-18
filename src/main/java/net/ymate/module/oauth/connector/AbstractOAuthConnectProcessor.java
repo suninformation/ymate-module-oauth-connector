@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -137,7 +138,7 @@ public abstract class AbstractOAuthConnectProcessor implements IOAuthConnectProc
      */
     protected JSONObject __doParseConnectResponseBody(IHttpResponse response) throws Exception {
         if (response != null) {
-            if (response.getStatusCode() == 200) {
+            if (response.getStatusCode() == HttpServletResponse.SC_OK) {
                 JSONObject _result = JSON.parseObject(response.getContent());
                 if (_result.containsKey(__errorFlag)) {
                     throw new RuntimeException(_result.toJSONString());
