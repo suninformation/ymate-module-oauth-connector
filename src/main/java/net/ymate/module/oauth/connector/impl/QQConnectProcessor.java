@@ -38,7 +38,7 @@ public class QQConnectProcessor extends AbstractOAuthConnectProcessor {
 
     private static final String __CONNECT_URL = "https://graph.qq.com/oauth2.0/authorize?";
 
-    private static final String __TOKEN_URL = "https://graph.qq.com/oauth2.0/token?";
+    private static final String __TOKEN_URL = "https://graph.qq.com/oauth2.0/token";
 
     private static final String __OPEN_ID_URL = "https://graph.qq.com/oauth2.0/me?access_token=";
 
