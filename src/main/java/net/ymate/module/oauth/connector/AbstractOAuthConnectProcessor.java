@@ -139,6 +139,9 @@ public abstract class AbstractOAuthConnectProcessor implements IOAuthConnectProc
     protected JSONObject __doParseConnectResponseBody(IHttpResponse response) throws Exception {
         if (response != null) {
             if (response.getStatusCode() == HttpServletResponse.SC_OK) {
+                if (_LOG.isDebugEnabled()) {
+                    _LOG.debug("ResponseBody: " + response.toString());
+                }
                 JSONObject _result = JSON.parseObject(response.getContent());
                 if (_result.containsKey(__errorFlag)) {
                     throw new RuntimeException(_result.toJSONString());
