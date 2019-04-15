@@ -88,15 +88,15 @@ public class DefaultOAuthConnectorModuleCfg implements IOAuthConnectorModuleCfg 
             for (Map.Entry<String, String> _entry : _cfgMap.entrySet()) {
                 if (CLIENT_ID.equalsIgnoreCase(_entry.getKey())) {
                     _clientId = _entry.getValue();
-                } else if (CLIENT_SECRET.equalsIgnoreCase(_entry.getValue())) {
+                } else if (CLIENT_SECRET.equalsIgnoreCase(_entry.getKey())) {
                     _clientSecret = _entry.getValue();
-                } else if (REDIRECT_URI.equalsIgnoreCase(_entry.getValue())) {
+                } else if (REDIRECT_URI.equalsIgnoreCase(_entry.getKey())) {
                     _redirectUrl = _entry.getValue();
                 } else {
                     _attributes.put(_entry.getKey(), _entry.getValue());
                 }
             }
-            if (StringUtils.isBlank(_clientId) && StringUtils.isBlank(_clientSecret)) {
+            if (StringUtils.isNotBlank(_clientId) && StringUtils.isNotBlank(_clientSecret)) {
                 if (__isPasswordEncrypted) {
                     if (__password != null) {
                         _clientSecret = __password.decrypt(_clientSecret);
