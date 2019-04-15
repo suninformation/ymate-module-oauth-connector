@@ -50,7 +50,7 @@ public class GitHubConnectProcessor extends AbstractOAuthConnectProcessor {
 
     @Override
     public OAuthConnectUser getConnectUser(String code) throws Exception {
-        OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL);
+        OAuthConnectUser _connectUser = __doGetAccessToken(code, __TOKEN_URL, true);
         if (_connectUser != null) {
             if (StringUtils.isNotBlank(_connectUser.getAccessToken())) {
                 IHttpResponse _response = HttpClientHelper.create().get(__USERINFO_URL.concat(_connectUser.getAccessToken()), __doGetRequestHeaders());
